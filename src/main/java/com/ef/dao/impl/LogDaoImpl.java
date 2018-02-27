@@ -11,11 +11,13 @@ import java.util.List;
 import org.hibernate.Criteria;
 import org.hibernate.Query;
 import org.hibernate.transform.Transformers;
+import org.springframework.stereotype.Repository;
 
 /**
  *
  * @author jdiaz86
  */
+@Repository("LogDao")
 public class LogDaoImpl extends AbstractDao implements LogDao {
     
     private static final String DELETE_FROM = "delete from Log";

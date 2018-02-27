@@ -28,15 +28,17 @@ import java.util.List;
 import java.util.NoSuchElementException;
 import java.util.stream.Stream;
 import org.apache.commons.lang3.ArrayUtils;
+import org.springframework.stereotype.Component;
 
 /**
  * Class to manage all logic business for Parser application
  * @author jdiaz86
  */
-public final class Helper {
+@Component
+public final class ParserHelper {
 
     //prevents from being instantized
-    private Helper() {
+    private ParserHelper() {
     }
     
     /**

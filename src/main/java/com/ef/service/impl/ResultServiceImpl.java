@@ -1,21 +1,24 @@
 package com.ef.service.impl;
 
 import com.ef.dao.ResultDao;
-import com.ef.dao.impl.ResultDaoImpl;
 import com.ef.exception.ParserException;
 import com.ef.model.Result;
 import com.ef.service.ResultService;
 import static com.ef.util.Const.EXCEPTION_IN_DATABASE;
 import java.util.List;
 import org.hibernate.HibernateException;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 /**
  *
  * @author jdiaz86
  */
+@Service
 public class ResultServiceImpl implements ResultService {
     
-    ResultDao dao = new ResultDaoImpl();
+    @Autowired
+    ResultDao dao;
 
     @Override
     public Result findOne(Long id) {

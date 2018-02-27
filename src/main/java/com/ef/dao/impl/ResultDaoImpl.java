@@ -4,11 +4,13 @@ import com.ef.dao.AbstractDao;
 import com.ef.dao.ResultDao;
 import com.ef.model.Result;
 import java.util.List;
+import org.springframework.stereotype.Repository;
 
 /**
  *
  * @author jdiaz86
  */
+@Repository("ResultDao")
 public class ResultDaoImpl extends AbstractDao implements ResultDao {
 
     @Override

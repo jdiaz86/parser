@@ -3,7 +3,7 @@ package com.ef.service.impl;
 import com.ef.exception.ParamDateFormatException;
 import com.ef.exception.ParamThresholdException;
 import com.ef.exception.ParameterNotFoundException;
-import com.ef.helper.Helper;
+import com.ef.helper.ParserHelper;
 import com.ef.model.Log;
 import com.ef.model.LogDto;
 import com.ef.model.Param;
@@ -19,21 +19,26 @@ import java.time.ZoneId;
 import java.util.Date;
 import java.util.List;
 import java.util.NoSuchElementException;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 /**
  * Main service for Parser application
  * @author jdiaz86
  */
+@Service
 public class ParserServiceImpl implements ParserService {
 
-    LogService logService = new LogServiceImpl();
-    ResultService resultService = new ResultServiceImpl();
+    @Autowired
+    LogService logService;
+    @Autowired
+    ResultService resultService;
 
     @Override
     public void run(String... args) {
         Long runtime = System.currentTimeMillis();
         parser(args);
-        Helper.printTime(runtime);
+        ParserHelper.printTime(runtime);
     }
 
     @Override
@@ -43,8 +48,8 @@ public class ParserServiceImpl implements ParserService {
     
     private void parser(String... args) {
         try {
-            Param param = Helper.getParams(args);
-            List<Log> logs = Helper.readFile(param);
+            Param param = ParserHelper.getParams(args);
+            List<Log> logs = ParserHelper.readFile(param);
             logService.removeAll();
             logService.saveBatch(logs);
             LocalDateTime from = LocalDateTime.ofInstant(param.getStartDate().toInstant(), ZoneId.systemDefault());
@@ -55,7 +60,7 @@ public class ParserServiceImpl implements ParserService {
                 to = from.plusHours(1);
             }
             List<LogDto> list = logService.process(from, to, param.getThreshold());
-            Helper.printHeader(param);
+            ParserHelper.printHeader(param);
             if (!list.isEmpty()) {
                 list.forEach((LogDto logDto) -> {
                     Result result = new Result();
@@ -63,9 +68,9 @@ public class ParserServiceImpl implements ParserService {
                     logDto.setComments(
                             String.format("The IP %s has a threshold of %d which is the result why is blocked, dates evaluated from %s to %s", 
                             logDto.getIp(), logDto.getTimes(), from, to));
-                    Helper.copy(logDto, result);
+                    ParserHelper.copy(logDto, result);
                     resultService.save(result);
-                    Helper.printResultToScreen(result);
+                    ParserHelper.printResultToScreen(result);
                 });                
             } else {
                 info("****************** NO DATA FOUND ***********************");

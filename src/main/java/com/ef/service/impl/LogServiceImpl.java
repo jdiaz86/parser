@@ -1,7 +1,6 @@
 package com.ef.service.impl;
 
 import com.ef.dao.LogDao;
-import com.ef.dao.impl.LogDaoImpl;
 import com.ef.exception.ParserException;
 import com.ef.model.Log;
 import com.ef.model.LogDto;
@@ -10,14 +9,18 @@ import static com.ef.util.Const.EXCEPTION_IN_DATABASE;
 import java.time.LocalDateTime;
 import java.util.List;
 import org.hibernate.HibernateException;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 /**
  *
  * @author jdiaz86
  */
+@Service
 public class LogServiceImpl implements LogService {
     
-    LogDao dao = new LogDaoImpl();
+    @Autowired
+    LogDao dao;
 
     @Override
     public Log findOne(Long id) {
